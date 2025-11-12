@@ -13,11 +13,7 @@
 - [Environment Variables](#environment-variables)  
 - [Scripts](#scripts)  
 - [Testing](#testing)  
-- [Storybook](#storybook)  
-- [Playwright](#playwright)  
-- [Folder Structure](#folder-structure)  
 - [Contributing](#contributing)  
-- [License](#license)  
 
 ---
 
@@ -79,7 +75,7 @@ framer-motion
 # UI / Component Docs
 @storybook/react @storybook/addon-essentials
 
-Getting Started
+##Getting Started
 
 Clone the repo
 ```
@@ -104,7 +100,7 @@ yarn dev
 Access the app
 Visit http://localhost:3000 in your browser.
 
-Environment Variables
+##Environment Variables
 
 Create a .env.local file in the root:
 ```
@@ -113,7 +109,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
 ```
 
-Scripts
+##Scripts
 
 ```
 npm run dev         # Start development server
@@ -123,7 +119,7 @@ npm run lint        # Lint code
 npm run format      # Format code with Prettier
 
 ```
-Contributing
+##Contributing
 
 1. Fork the repo
 
