@@ -1,0 +1,42 @@
+{
+  "name": "match_fit",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "@sentry/nextjs": "^10.25.0",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.81.1",
+    "@tanstack/react-query": "^5.90.7",
+    "axios": "^1.13.2",
+    "framer-motion": "^12.23.24",
+    "next": "16.0.1",
+    "playhouse": "^3.0.0",
+    "playwright": "^1.56.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.66.0",
+    "resend": "^6.4.2",
+    "uploadthing": "^7.7.4",
+    "zod": "^4.1.12",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "lighthouse": "^12.8.2",
+    "prisma": "^6.19.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-primary: #ffd700; /* Gold — your brand anchor */
+  --color-secondary: #ffffff; /* Pure white for high-impact text/icons */
+  --color-accent: #1a1a1a; /* Slightly lighter dark for cards/forms */
+  --color-neutral: #151515; /* Subtle layering */
+  --color-contrast: #cccccc; /* Body text (WCAG AAA compliant on dark) */
+  --color-success: #4ade80; /* Optional: for success states */
+  --color-error: #fca5a5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
