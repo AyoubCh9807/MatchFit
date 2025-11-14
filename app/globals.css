@@ -3,12 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --color-primary: #ffd700; /* Gold — your brand anchor */
-  --color-secondary: #ffffff; /* Pure white for high-impact text/icons */
-  --color-accent: #1a1a1a; /* Slightly lighter dark for cards/forms */
-  --color-neutral: #151515; /* Subtle layering */
-  --color-contrast: #cccccc; /* Body text (WCAG AAA compliant on dark) */
-  --color-success: #4ade80; /* Optional: for success states */
+  --color-primary: #ffd700; 
+  --color-secondary: #ffffff;
+  --color-accent: #1a1a1a; 
+  --color-neutral: #151515; 
+  --color-contrast: #cccccc; 
+  --color-success: #4ade80; 
   --color-error: #fca5a5;
 }
 
@@ -30,6 +30,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 @layer utilities {

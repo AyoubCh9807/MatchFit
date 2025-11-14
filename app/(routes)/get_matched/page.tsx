@@ -1,73 +1,107 @@
 "use client";
 
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/supabaseClient";
 import { initSentryUser } from "@/lib/sentry/sentry";
 import { useRouter } from "next/navigation";
+import { GoalsForm } from "@/components/GoalsForm";
+import HealthInformationForm from "@/components/HealthForm";
+import { HealthData, Step } from "@/types/GetMatchedTypes";
+import { GoalsData } from "@/types/GetMatchedTypes";
+import PreferencesForm from "@/components/PreferencesForm";
+import { MatchGrid } from "@/components/MatchGrid";
+import { Trainer } from "@/types/Trainer";
 
 export default function GetMatchedPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [step, setStep] = useState(1); // Step 1: Goals → Step 2: Fitness Level → Step 3: Preferences (future)
-  const [formData, setFormData] = useState({
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ready, setReady] = useState<boolean>(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const [matching, setMatching] = useState<Trainer[]>([
+  {
+    id: "a7f8c2b1-1234-4cde-9a87-1a2b3c4d5e6f",
+    name: "Lina Moretti",
+    avatar_url: "https://randomuser.me/api/portraits/women/44.jpg",
+    role: "Strength & Conditioning Coach",
+    rating: 4.8,
+    experience_years: 6,
+    bio: "Certified trainer specialized in building functional strength and sustainable habits for athletes and professionals.",
+    specialties: ["Strength Training", "Functional Fitness", "Mobility"],
+    certifications: ["NASM CPT", "CrossFit Level 1"],
+    available_hours: ["Mon-Fri 8:00-16:00", "Sat 9:00-13:00"],
+    clients: [],
+  },
+  {
+    id: "b4c9d7e2-5678-4f3a-8c9b-2e3f4a5b6c7d",
+    name: "Marcus Tan",
+    avatar_url: "https://randomuser.me/api/portraits/men/32.jpg",
+    role: "HIIT & Cardio Expert",
+    rating: 4.9,
+    experience_years: 8,
+    bio: "Former professional sprinter helping clients improve endurance, explosiveness, and overall athleticism.",
+    specialties: ["HIIT", "Cardio", "Explosive Training"],
+    certifications: ["ACE Personal Trainer", "Precision Nutrition Level 1"],
+    available_hours: ["Tue-Sun 10:00-18:00"],
+    clients: [],
+  },
+  {
+    id: "c2f7a6b8-9101-4e3f-9b7c-3d2e1f4a5b6c",
+    name: "Sofia Delgado",
+    avatar_url: "https://randomuser.me/api/portraits/women/68.jpg",
+    role: "Yoga & Mindfulness Instructor",
+    rating: 4.7,
+    experience_years: 5,
+    bio: "Yoga teacher blending physical practice with mindful meditation to improve balance, strength, and mental clarity.",
+    specialties: ["Vinyasa Yoga", "Breathwork", "Mindfulness"],
+    certifications: ["RYT 500", "Meditation Coach Certification"],
+    available_hours: ["Mon-Fri 7:00-15:00"],
+    clients: [],
+  },
+])
+
+  const [goalsData, setGoalsData] = useState<GoalsData>({
     goals: "",
     fitnessLevel: "beginner",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [healthData, setHealthData] = useState<HealthData>({
+    injuries: "",
+    healthConditions: "",
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/");
-        return;
-      }
-
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return router.push("/");
       setUser(user);
-      initSentryUser({
-        id: user.id,
-        email: user.email,
-        role: "client",
-      });
+      initSentryUser({ id: user.id, email: user.email, role: "client" });
     };
-
     fetchUser();
   }, [router]);
 
-  const handleGoalChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData({ ...formData, goals: e.target.value });
-  };
+  const nextStep = () => setStep((s) => (s < 3 ? ((s + 1) as Step) : s));
+  const prevStep = () => setStep((s) => (s > 1 ? ((s - 1) as Step) : s));
 
-  const handleFitnessLevelChange = (level: string) => {
-    setFormData({ ...formData, fitnessLevel: level });
-  };
-
-  const handleSubmit = async () => {
+  const handleMatching = () => {
     setIsSubmitting(true);
     try {
-      // Update user profile in Supabase
-      const { error } = await supabase
-        .from("users")
-        .update({
-          fitness_goals: formData.goals,
-          fitness_level: formData.fitnessLevel,
-          matched_at: new Date().toISOString(),
-        })
-        .eq("id", user.id);
-
-      if (error) throw error;
-
-      // Redirect to next step or matching results
-      setTimeout(() => {
-        router.push("/match-results");
-      }, 800);
-    } catch (err) {
-      console.error("Failed to save match preferences:", err);
-      alert("Something went wrong. Please try again.");
+      setReady(true);
+    } catch(error) {
+      setMsg(error instanceof Error ? error.message : "error: Something went wrong");
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
+
+  
+
+  if (!user) return <div>Loading...</div>;
 
   if (!user) {
     return (
@@ -79,86 +113,65 @@ export default function GetMatchedPage() {
 
   return (
     <div className="min-h-screen bg-(--background)] text-foreground tont-sans overflow-x-hidden">
-
-
       <div className="flex">
-
-
         {/* Main Content */}
         <main className="flex-1 p-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-(--color-secondary)">Let's Find Your Perfect Match</h1>
+            <h1 className="text-2xl font-bold text-(--color-secondary)">
+              Let's Find Your Perfect Match
+            </h1>
             <p className="text-(--color-contrast) mt-1">
-              Tell us about your fitness goals and needs so we can match you with the right experts.
+              Tell us about your fitness goals and needs so we can match you
+              with the right experts.
             </p>
           </div>
 
           {/* Progress Bar */}
           <div className="mb-8 flex items-center gap-2">
-            <div className={`w-1/3 h-2 rounded-full ${step >= 1 ? 'bg-(--color-primary)' : 'bg-[#333333]'}`}></div>
-            <div className={`w-1/3 h-2 rounded-full ${step >= 2 ? 'bg-(--color-primary)' : 'bg-[#333333]'}`}></div>
-            <div className={`w-1/3 h-2 rounded-full ${step >= 3 ? 'bg-(--color-primary)' : 'bg-[#333333]'}`}></div>
-          </div>
-
-          {/* Form Card */}
-          <div className="bg-(--color-accent) border border-[#333333] rounded-xl p-6 shadow-lg">
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-(--color-primary) rounded-full flex items-center justify-center text-(--color-secondary) font-bold text-sm">
-                  🎯
-                </div>
-                <h2 className="text-xl font-bold text-(--color-secondary)">Your Goals</h2>
-              </div>
-              <p className="text-(--color-contrast) mb-4">
-                What are your fitness goals?
-              </p>
-              <textarea
-                value={formData.goals}
-                onChange={handleGoalChange}
-                placeholder="Tell us what you want to achieve... (e.g., lose weight, build muscle, improve endurance, prepare for a marathon, etc.)"
-                className="w-full p-4 bg-[#1e1e1e] border border-[#333333] rounded-lg text-(--foreground)] ocus:outline-none focus:ring-2 focus:ring-[#e6c200] resize-none"
-                rows={4}
-              />
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-sm font-medium text-(--color-contrast) mb-3">Fitness Level</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {["beginner", "intermediate", "advanced"].map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => handleFitnessLevelChange(level)}
-                    className={`py-3 px-4 rounded-lg text-sm font-medium transition ${
-                      formData.fitnessLevel === level
-                        ? "bg-(--color-primary) text-(--color-secondary) shadow"
-                        : "bg-[#252525] text-(--color-contrast) hover:bg-[#2d2d2d]"
-                    }`}
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className={`w-full py-3 rounded-lg font-semibold transition ${
-                isSubmitting
-                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                  : "bg-(--color-primary) text-(--color-secondary) hover:bg-[#e6c200] active:bg-[#ccac00]"
+            <div
+              className={`w-1/3 h-2 rounded-full ${
+                step >= 1 ? "bg-(--color-primary)" : "bg-[#333333]"
               }`}
-            >
-              {isSubmitting ? (
-                <span className="flex items-center justify-center">
-                  <div className="w-5 h-5 animate-spin rounded-full border-2 border-(--color-secondary) mr-2"></div>
-                  Saving...
-                </span>
-              ) : (
-                "Continue →"
-              )}
-            </button>
+            ></div>
+            <div
+              className={`w-1/3 h-2 rounded-full ${
+                step >= 2 ? "bg-(--color-primary)" : "bg-[#333333]"
+              }`}
+            ></div>
+            <div
+              className={`w-1/3 h-2 rounded-full ${
+                step >= 3 ? "bg-(--color-primary)" : "bg-[#333333]"
+              }`}
+            ></div>
           </div>
+          {!ready && step === 1 && (
+            <GoalsForm
+              data={goalsData as GoalsData}
+              onChange={setGoalsData}
+              onNext={nextStep}
+            />
+          )}
+          {!ready && step === 2 && (
+            <HealthInformationForm
+              data={healthData}
+              onChange={setHealthData}
+              onNext={nextStep}
+              onBack={prevStep}
+            />
+          )}
+          {!ready && step === 3 && (
+            <PreferencesForm onBack={() => {setStep(2)}} onComplete={() => {
+              handleMatching();
+            }} />
+          )}
+          {ready && <MatchGrid matches={matching} />}
+
+          {/*
+          THE PLAN:
+          push the user into a /get_matched/results route that will have the matches mapped in an array
+          and there would be a filter for filtering the matches based on the user's preferences
+          */} 
+
         </main>
       </div>
     </div>

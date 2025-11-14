@@ -32,75 +32,90 @@ export default function HomePage() {
   const onSubmit = async (data: FormData) => {
     try {
       if (isLoginMode) {
-        // Login
+        // LOGIN FLOW
         const { data: loginData, error: loginError } =
           await supabase.auth.signInWithPassword({
             email: data.email,
             password: data.password,
           });
         if (loginError) throw loginError;
+        if (!loginData.user) throw new Error("User not found after login");
+
+        // Determine role
+        const { data: trainerData } = await supabase
+          .from("trainers")
+          .select("id")
+          .eq("id", loginData.user.id)
+          .maybeSingle()
+
+        const role: "trainer" | "client" = trainerData ? "trainer" : "client";
 
         // Set Sentry context
         initSentryUser({
-          id: loginData.user?.id,
-          email: data.email,
-          role: currentRole,
+          id: loginData.user.id,
+          email: loginData.user.email,
+          role,
         });
 
-        console.log("✅ Logged in:", data.email);
+        console.log("✅ Logged in as", role, data.email);
         setSubmitted(true);
         router.push("/dashboard");
       } else {
-        // SignUp
+        // SIGNUP FLOW
         const { data: signUpData, error: signUpError } =
           await supabase.auth.signUp({
             email: data.email,
             password: data.password,
-            options: {
-              data: { role: data.role, name: data.name },
+            
+            options: { data: { role: data.role, name: data.name },
             },
+            
           });
         if (signUpError) throw signUpError;
+        if (!signUpData.user) throw new Error("User not created");
 
-        // 🔹 Insert into the correct table
-        if (data.role === "trainer") {
-          const { error: trainerError } = await supabase
-            .from("trainers")
-            .insert([
-              {
-                id: signUpData.user?.id,
-                name: data.name,
-                email: data.email,
-                created_at: new Date().toISOString(),
-              },
-            ]);
-          if (trainerError) throw trainerError;
-        } else {
-          const { error: userError } = await supabase.from("users").insert([
+        // Insert into table
+        const table = data.role === "trainer" ? "trainers" : "users";
+        const { error: insertError } = await supabase
+          .from(table)
+          .insert([
             {
-              id: signUpData.user?.id,
+              id: signUpData.user.id,
               name: data.name,
-              email: data.email,
               created_at: new Date().toISOString(),
             },
           ]);
-          if (userError) throw userError;
-        }
+        if (insertError) throw insertError;
 
-        // Set Sentry user context
+        // AUTO LOGIN AFTER SIGNUP
+        const { data: loginData, error: loginError } =
+          await supabase.auth.signInWithPassword({
+            email: data.email,
+            password: data.password,
+          });
+        if (loginError) throw loginError;
+        if (!loginData.user)
+          throw new Error("User not found after signup login");
+
+        // Set Sentry context
         initSentryUser({
-          id: signUpData.user?.id,
+          id: loginData.user.id,
           email: data.email,
           role: data.role,
         });
 
-        console.log("✅ Account created:", signUpData);
+        console.log(
+          "✅ Account created and logged in as",
+          data.role,
+          data.email
+        );
         setSubmitted(true);
+        router.push("/dashboard");
       }
     } catch (error: any) {
       logSentryError(error, {
         page: "HomePage",
-        context: { role: currentRole, email: data.email },
+        context: { email: data.email, role: currentRole },
       });
       console.error("❌ Auth error:", error.message || error);
     }
