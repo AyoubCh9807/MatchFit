@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MatchFit Web App
 
-## Getting Started
+**MatchFit** — Connecting clients with verified fitness experts using AI-driven matching. Full-featured dashboard for clients and experts with fitness tracking, messaging, and plan management.
 
-First, run the development server:
+---
 
-```bash
+## Table of Contents
+
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Dependencies](#dependencies)  
+- [Getting Started](#getting-started)  
+- [Environment Variables](#environment-variables)  
+- [Scripts](#scripts)  
+- [Testing](#testing)  
+- [Contributing](#contributing)  
+
+---
+
+## Features
+
+- Client dashboard: view progress, active experts, and matched plans.  
+- Expert dashboard: manage client requests and plans.  
+- AI-driven fitness matching based on user goals and preferences.  
+- Messaging between clients and experts.  
+- Track progress logs and fitness plans.  
+- Role-based access: Client / Expert.  
+- Real-time data updates using React Query.  
+- State management with Zustand.  
+- Error tracking with Sentry.  
+- Fully responsive UI built with TailwindCSS and Next.js.  
+
+---
+
+## Tech Stack
+
+- **Frontend:** Next.js (App Router, React 18+)  
+- **Styling:** TailwindCSS, Google Fonts (Geist, Geist Mono)  
+- **State Management:** Zustand  
+- **Data Fetching:** React Query  
+- **Authentication & DB:** Supabase  
+- **Error Tracking:** Sentry  
+- **Testing:** Playwright (E2E)  
+- **Component Library / UI Docs:** Storybook  
+- **Animations:** Framer Motion  
+
+---
+
+## Dependencies
+
+# Core
+next react react-dom typescript
+
+# Styling
+tailwindcss postcss autoprefixer
+
+# State Management
+zustand
+
+# Data Fetching
+@tanstack/react-query
+
+# Authentication / Database
+@supabase/supabase-js
+
+# Error Tracking
+@sentry/react @sentry/tracing
+
+# Animations
+framer-motion
+
+# Testing
+@playwright/test
+
+# UI / Component Docs
+@storybook/react @storybook/addon-essentials
+
+##Getting Started
+
+Clone the repo
+```
+git clone https://github.com/your-username/matchfit.git
+cd matchfit
+```
+
+Install dependencies
+```
+npm install
+# or
+yarn
+```
+
+Run dev server
+```
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Access the app
+Visit http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a .env.local file in the root:
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm run dev         # Start development server
+npm run build       # Build for production
+npm run start       # Start production server
+npm run lint        # Lint code
+npm run format      # Format code with Prettier
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork the repo
 
-## Deploy on Vercel
+2. reate a branch: git checkout -b feature/my-feature
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Commit changes: git commit -m "Add my feature"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Push to branch: git push origin feature/my-feature
+
+5. Open a pull request
+
