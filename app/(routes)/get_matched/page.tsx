@@ -75,8 +75,17 @@ export default function GetMatchedPage() {
     healthConditions: "",
   });
 
-  // Fetch user on mount
   useEffect(() => {
+    setUser({
+      id: "u1234567-89ab-cdef-0123-456789abcdef",
+      name: "Itercio",
+      email: "oscar.itercio@gmail.com",
+    });
+  }, []);
+
+  // Fetch user on mount
+  /*
+    useEffect(() => {
     const fetchUser = async () => {
       const {
         data: { user },
@@ -87,6 +96,7 @@ export default function GetMatchedPage() {
     };
     fetchUser();
   }, [router]);
+  */
 
   const nextStep = () => setStep((s) => (s < 3 ? ((s + 1) as Step) : s));
   const prevStep = () => setStep((s) => (s > 1 ? ((s - 1) as Step) : s));
@@ -140,7 +150,7 @@ export default function GetMatchedPage() {
               <div
                 key={i}
                 className={`w-1/3 h-2 rounded-full ${
-                  step >= i ? "bg-[--color-primary]" : "bg-[#333333]"
+                  step >= i ? "bg-(--color-primary)" : "bg-[#333333]"
                 }`}
               />
             ))}

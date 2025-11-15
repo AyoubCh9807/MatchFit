@@ -87,7 +87,6 @@ const mostFrequentClient = Object.values(clientFrequency).sort((a, b) => b.count
 export default function ExpertProgressMock() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-(--color-secondary)">
           Your Progress
@@ -97,7 +96,6 @@ export default function ExpertProgressMock() {
         </p>
       </div>
 
-      {/* Summary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { title: "Completed Sessions", value: completedSessions, icon: "✅" },
@@ -130,9 +128,7 @@ export default function ExpertProgressMock() {
         ))}
       </div>
 
-      {/* Client Highlights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Last Session */}
         <div className="bg-(--color-accent) border border-[#333333] rounded-xl overflow-hidden">
           <div className="p-5 border-b border-[#333333]">
             <h2 className="text-lg font-semibold text-(--color-secondary)">
@@ -171,7 +167,6 @@ export default function ExpertProgressMock() {
           </div>
         </div>
 
-        {/* Most Frequent Client */}
         <div className="bg-(--color-accent) border border-[#333333] rounded-xl overflow-hidden">
           <div className="p-5 border-b border-[#333333]">
             <h2 className="text-lg font-semibold text-(--color-secondary)">
@@ -182,10 +177,10 @@ export default function ExpertProgressMock() {
             {mostFrequentClient ? (
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-[#252525] shrink-0 flex items-center justify-center text-(--color-primary) font-bold">
-                  {mostFrequentClient.userId.charAt(0).toUpperCase()}
+                  D
                 </div>
                 <div>
-                  <h3 className="font-bold text-(--color-secondary)">{mostFrequentClient.userId}</h3>
+                  <h3 className="font-bold text-(--color-secondary)">Dexter</h3>
                   <p className="text-(--color-contrast) text-sm">
                     {mostFrequentClient.count} {mostFrequentClient.count === 1 ? "session" : "sessions"}
                   </p>

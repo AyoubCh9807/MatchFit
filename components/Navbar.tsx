@@ -38,10 +38,8 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("role", role ?? "client");
   }, [role]);
 
-  // Don't render navbar on "/" route
   if (pathname === "/") return <>{children}</>;
 
-  // ...rest of your component logic (menu items, JSX)
   const userItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
     { name: "Get Matched", icon: "🤝", path: "/get_matched" },
@@ -53,7 +51,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
   const trainerItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
     { name: "Schedule", icon: "🏠", path: "/schedule" },
-    { name: "My Clients", icon: "👤", path: "/clients" },
+    { name: "My Sessions", icon: "👤", path: "/clients" },
     { name: "My Certifications", icon: "📈", path: "/certifications" },
     { name: "Settings", icon: "⚙️", path: "/settings" },
   ];
@@ -98,7 +96,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
               onClick={() => setRole(role === "trainer" ? "client" : "trainer")}
               className="px-4 py-2 rounded-lg text-sm font-medium bg-[#2d2d2d] text-(--color-contrast) hover:bg-[#333333] transition"
             >
-              Switch to Expert View
+              Switch View
             </button>
 
             <div className="flex items-center gap-2 bg-[#252525] px-3 py-2 rounded-full">

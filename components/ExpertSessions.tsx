@@ -32,7 +32,7 @@ const mockClients = [
   },
 ];
 
-export default function ClientsPage() {
+export default function ExpertSessionsPage() {
   const router = useRouter();
   const [authUserId, setAuthUserId] = useState<string | null>(mockClients[0].id);
   const [searchTerm, setSearchTerm] = useState("");

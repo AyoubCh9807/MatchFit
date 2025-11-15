@@ -13,6 +13,7 @@ export const GoalsForm = ({ data, onChange, onNext }: GoalsFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNext = async () => {
+    if(data.goals.length < 10) return;
     try {
       setIsSubmitting(true);
       onNext();

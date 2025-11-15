@@ -17,13 +17,13 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="#get-started"
+              href="/get_matched"
               className="px-8 py-4 bg-(--color-primary) text-(--color-secondary) font-bold rounded-lg shadow-lg hover:bg-[#e6c200] transition"
             >
               Get Matched
             </Link>
             <Link
-              href="/experts"
+              href="/sessions"
               className="px-8 py-4 bg-transparent border-2 border-(--color-primary) text-(--color-primary) font-bold rounded-lg hover:bg-(--color-primary) hover:text-(--color-secondary) transition"
             >
               View Sessions
@@ -133,7 +133,7 @@ export default function LandingPage() {
             Sign in to access your dashboard, sessions, and progress.
           </p>
           <button
-            onClick={() => router.push("/auth")}
+            onClick={() => router.push("/")}
             className="px-6 py-3 bg-(--color-primary) text-(--color-secondary) font-bold rounded-lg shadow hover:bg-[#e6c200] active:bg-[#ccac00] transition"
           >
             Log In
