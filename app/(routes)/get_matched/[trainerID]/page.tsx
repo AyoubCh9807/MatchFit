@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Image from "next/image";
-import { supabase } from "@/lib/supabase/supabaseClient";
 import { Trainer } from "@/types/Trainer";
 import { BookingModal } from "@/components/BookingModal";
-import { logSentryError, initSentryUser } from "@/lib/sentry/sentry";
 import { User } from "@/types/User";
-import { useQuery } from "@tanstack/react-query";
+import { Session } from "@/types/Session";
+import { mockTrainers } from "@/app/data/trainers";
 
 export default function TrainerProfilePage() {
   const params = useParams();
@@ -16,48 +15,45 @@ export default function TrainerProfilePage() {
   const [trainer, setTrainer] = useState<Trainer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User>({
+    id: "u1234567-89ab-cdef-0123-456789abcdef",
+    name: "Itercio",
+    avatar_url: "https://randomuser.me/api/portraits/men/75.jpg",
+    email: "oscar.itercio@example.com",
+    age: 25,
+    gender: "male",
+    location: "Korea, Seoul",
+    fitness_level: "Intermediate",
+    goals:
+      "I want to build muscle, improve endurance, and run a half marathon by next summer.",
+    created_at: "2025-11-15T17:00:00.000Z",
+    experts: [
+      "a7f8c2b1-1234-4cde-9a87-1a2b3c4d5e6f",
+      "b4c9d7e2-5678-4f3a-8c9b-2e3f4a5b6c7d",
+    ],
+  });
   const [booking, setBooking] = useState<boolean>(false);
 
-  const { data: currentUser, isLoading: userLoading } = useQuery<User, Error>({
-    queryKey: ["currentUser"],
-    queryFn: async () => {
-      // 1️⃣ Get auth user
-      const { data: authData, error: authError } =
-        await supabase.auth.getUser();
-      if (authError || !authData.user) throw new Error("Not logged in");
+  // Mock sessions array
+  let sessions: Session[] = [];
 
-      //Get user row from users table
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", authData.user.id)
-        .single();
-
-      if (error || !data) throw new Error("User not found");
-
-      //Initialize Sentry
-      initSentryUser({ id: data.id, email: data.email, role: "client" });
-
-      return data as User;
-    },
-  });
-
+  // useEffect replaced with mock fetch
   useEffect(() => {
+    // Simulate async loading
     const fetchTrainer = async () => {
+      setIsLoading(true);
       try {
-        const { data, error } = await supabase
-          .from("trainers")
-          .select("*")
-          .eq("id", trainerID)
-          .single();
-
-        if (error) throw error;
-        if (!data) return notFound();
-
-        setTrainer(data as Trainer);
-      } catch (err: any) {
-        console.error("Failed to load trainer:", err);
-        setError("Trainer not found.");
+        // Find trainer in mockTrainers by ID
+        const foundTrainer = mockTrainers.find((t) => t.id === trainerID);
+        if (!foundTrainer) {
+          setError("Trainer not found");
+          setTrainer(null);
+        } else {
+          setTrainer(foundTrainer);
+        }
+      } catch (err) {
+        setError("Failed to load trainer");
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -67,7 +63,8 @@ export default function TrainerProfilePage() {
   }, [trainerID]);
 
   // Booking function
-  const onBook = async (data: {
+  /*
+        const onBook = async (data: {
     date: string;
     time: string;
     sessionType?: string;
@@ -131,12 +128,47 @@ export default function TrainerProfilePage() {
       throw err;
     }
   };
+  */
 
-  if (isLoading || userLoading) {
+  const onBook = async (data: {
+    date: string;
+    time: string; // required now
+    sessionType?: string;
+    notes?: string;
+    user: User;
+  }): Promise<void> => {
+    if (!trainer) return;
+
+    // Create a mock session ID
+    const newSessionId = crypto.randomUUID();
+    setBooking(true);
+
+    // Create the new session object
+    const newSession: Session = {
+      id: newSessionId,
+      trainer_id: trainer.id,
+      user_id: data.user.id,
+      date: data.date,
+      status: "booked",
+      trainer_name: trainer.name,
+      trainer_avatar_url: trainer.avatar_url,
+      time: data.time,
+      session_type: data.sessionType || null,
+      notes: data.notes || null,
+    };
+
+    // Add to the mock sessions array
+    sessions.push(newSession);
+
+    // Simulate async delay
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  };
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (error || !trainer || !currentUser) {
+  if (error || !trainer) {
     return <div>Profile or user not found.</div>;
   }
 
@@ -288,7 +320,7 @@ export default function TrainerProfilePage() {
                 setBooking(false);
               }}
               onBook={onBook}
-              user={currentUser}
+              user={user}
             />
           )}
 

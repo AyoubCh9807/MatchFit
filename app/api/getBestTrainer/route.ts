@@ -1,3 +1,4 @@
+/*
 // app/api/getBestTrainer/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { Trainer } from "@/types/Trainer";
@@ -168,3 +169,5 @@ ${trainerOverview}
     );
   }
 }
+
+*/

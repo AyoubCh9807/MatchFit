@@ -3,7 +3,10 @@ export type Session = {
   trainer_id: string;
   user_id: string;
   date: string;
-  status: "completed" | "booked" | "canceled";
-  trainer_name?: string;
-  trainer_avatar_url?: string;
+  time: string;
+  session_type: string | null;
+  notes: string | null;
+  status: "booked" | "completed" | "canceled";
+  trainer_name: string | null;
+  trainer_avatar_url: string | null;
 };

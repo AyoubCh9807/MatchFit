@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 interface Store {
-  sidebarOpen: boolean;
-  toggleSidebar: () => void;
+  role: "client" | "trainer";
+  setRole: (role: "client" | "trainer") => void;
 }
 
 export const useStore = create<Store>((set) => ({
-  sidebarOpen: false,
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen }))
+  role: "client",
+  setRole: (role) => set({ role }),
 }));
