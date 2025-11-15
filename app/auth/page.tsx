@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { supabase } from "@/lib/supabase/supabaseClient";
 import { logSentryError, initSentryUser } from "@/lib/sentry/sentry";
 import { useRouter } from "next/navigation";
 
@@ -17,6 +16,7 @@ type FormData = {
 export default function HomePage() {
   const router = useRouter();
 
+/*
   useEffect(() => {
     const fetchUser = async() => {
       const user = await (await supabase.auth.getUser()).data.user;
@@ -24,6 +24,7 @@ export default function HomePage() {
     }
     
   })
+*/
 
   const {
     register,
@@ -37,7 +38,8 @@ export default function HomePage() {
   const [submitted, setSubmitted] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(false);
 
-  const onSubmit = async (data: FormData) => {
+  /*
+    const onSubmit = async (data: FormData) => {
     try {
       if (isLoginMode) {
         // LOGIN FLOW
@@ -128,6 +130,8 @@ export default function HomePage() {
       console.error("❌ Auth error:", error.message || error);
     }
   };
+  */
+  const onSubmit = () => {};
 
   const currentRole = watch("role");
 
