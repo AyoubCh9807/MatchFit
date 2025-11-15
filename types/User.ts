@@ -1,6 +1,7 @@
 export type User = {
   id: string;                 
   name: string;
+  avatar_url: string;
   email: string;
   age?: number | null;
   gender?: "male" | "female" | "other" | null;

@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/supabaseClient";
 import { initSentryUser } from "@/lib/sentry/sentry";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/User";
+import ExpertDashboard from "../expert_dashboard/page";
 
 export default function ClientDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | any | null>(null);
   const [stats, setStats] = useState({
     activeExperts: 0,
     pendingRequests: 0,
@@ -79,6 +81,10 @@ export default function ClientDashboard() {
     fetchData();
   }, [router]);
 
+  if(user && user.role) {
+    return <ExpertDashboard/>
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-(--background)] ext-(--foreground)] lex items-center justify-center">
@@ -86,6 +92,8 @@ export default function ClientDashboard() {
       </div>
     );
   }
+
+  if(user.role)
 
   return (
     <div className="min-h-screen bg-(--background)] ext-(--foreground)] ont-sans overflow-x-hidden">
