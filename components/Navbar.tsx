@@ -10,10 +10,12 @@ import { Trainer } from "@/types/Trainer";
 export const Navbar = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
+  //MESSAGES WILL BE ADDED LATER
+
   const userItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
     { name: "Get Matched", icon: "🤝", path: "/get_matched" },
-    { name: "Messages", icon: "💬", path: "/messages" },
+    // { name: "Messages", icon: "💬", path: "/messages" },
     { name: "My Sessions", icon: "👤", path: "/sessions" },
     { name: "Progress", icon: "📈", path: "/progress" },
     { name: "Settings", icon: "⚙️", path: "/settings" },
@@ -22,7 +24,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
   const trainerItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
     { name: "Schedule", icon: "🏠", path: "/schedule" },
-    { name: "Messages", icon: "💬", path: "/messages" },
+    // { name: "Messages", icon: "💬", path: "/messages" },
     { name: "My Clients", icon: "👤", path: "/clients" },
     { name: "My Certifications", icon: "📈", path: "/certifications" },
     { name: "Settings", icon: "⚙️", path: "/settings" },
@@ -132,15 +134,6 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
               >
                 ← Back to Dashboard
               </button>
-
-              {(
-                <button
-                  onClick={() => setRole(role === "trainer" ? "client" : "trainer")}
-                  className="px-4 py-2 rounded-lg text-sm font-medium bg-[#2d2d2d] text-(--color-contrast) hover:bg-[#333333] transition"
-                >
-                  Switch to Expert View
-                </button>
-              )}
 
               <div className="flex items-center gap-2 bg-[#252525] px-3 py-2 rounded-full">
                 <div className="w-8 h-8 rounded-full bg-(--color-primary) flex items-center justify-center text-(--color-secondary) font-bold text-xs">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { supabase } from "@/lib/supabase/supabaseClient";
@@ -16,6 +16,14 @@ type FormData = {
 
 export default function HomePage() {
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async() => {
+      const user = await (await supabase.auth.getUser()).data.user;
+      if(user?.id) router.push("/dashboard");
+    }
+    
+  })
 
   const {
     register,

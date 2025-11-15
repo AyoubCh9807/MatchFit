@@ -36,17 +36,30 @@ export const GoalsForm = ({ data, onChange, onNext }: GoalsFormProps) => {
         What are your fitness goals?
       </p>
 
-      <textarea
-        minLength={5}
-        maxLength={255}
-        value={data.goals}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          onChange({ ...data, goals: e.target.value })
-        }
-        placeholder="Tell us what you want to achieve... (e.g., lose weight, build muscle, improve endurance, prepare for a marathon, etc.)"
-        className="w-full p-4 bg-[#1e1e1e] border border-[#333333] rounded-lg text--foreground focus:outline-none focus:ring-2 focus:ring-[#e6c200] resize-none mb-6"
-        rows={4}
-      />
+      <div className="relative">
+        <textarea
+          minLength={10}
+          maxLength={255}
+          value={data.goals}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            onChange({ ...data, goals: e.target.value })
+          }
+          placeholder="Tell us what you want to achieve... (e.g., lose weight, build muscle, improve endurance, prepare for a marathon, etc.)"
+          className="w-full p-4 bg-[#1e1e1e] border border-[#333333] rounded-lg text--foreground focus:outline-none focus:ring-2 focus:ring-[#e6c200] resize-none mb-2"
+          rows={4}
+        />
+        <p
+          className={`text-sm text-right ${
+            data.goals.length < 10
+              ? "text-(--color-error)"
+              : data.goals.length > 255
+              ? "text-(--color-error)" // error
+              : "text-(--color-success)" // success
+          }`}
+        >
+          {data.goals.length} / 255
+        </p>
+      </div>
 
       <div className="mb-6">
         <h3 className="text-sm font-medium text-(--color-contrast) mb-3">

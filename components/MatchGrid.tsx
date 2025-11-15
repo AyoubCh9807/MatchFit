@@ -1,6 +1,7 @@
 import { Trainer } from "@/types/Trainer";
 import Image from "next/image";
 import Link from "next/link";
+import { use, useEffect } from "react";
 
 interface MatchGridProps {
   matches: Trainer[];
@@ -8,6 +9,10 @@ interface MatchGridProps {
 }
 
 export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
+  useEffect(() => {
+    console.log(matches)
+  },[matches])
+  
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,27 +44,28 @@ export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
         </div>
         <h3 className="text-(--color-secondary) font-semibold text-lg mb-1">No matches found</h3>
         <p className="text-(--color-contrast) max-w-md">
-          We couldn’t find experts matching your preferences. Try updating your goals or health info.
+          We couldn't find experts matching your preferences. Try updating your goals or health info.
         </p>
       </div>
     );
   }
 
-  return (
+  if(matches.length > 0) return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {matches.map((trainer) => (
+      {/*dont forget to fix this */}
+      {matches.map((trainer, i) => (
         <div
-          key={trainer.id}
+          key={i}
           className="bg-(--color-accent) border border-[#333333] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full"
         >
           <div className="p-5 border-b border-[#333333]">
             <div className="flex items-start gap-4">
               <div className="relative shrink-0">
                 <div className="w-16 h-16 rounded-full bg-[#252525] flex items-center justify-center overflow-hidden">
-                  {trainer.avatar_url ? (
+                  {trainer?.avatar_url ? (
                     <Image
-                      src={trainer.avatar_url}
-                      alt={trainer.name}
+                      src={trainer?.avatar_url}
+                      alt={trainer?.name}
                       width={64}
                       height={64}
                       className="object-cover"
@@ -67,24 +73,24 @@ export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
                     />
                   ) : (
                     <span className="text-(--color-primary) font-bold text-xl">
-                      {trainer.name.charAt(0).toUpperCase()}
+                      {trainer?.name.charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
-                {trainer.rating != null && (
+                {trainer?.rating != null && (
                   <div
                     className="absolute -bottom-1 -right-1 bg-(--color-primary) text-(--color-secondary) text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center"
-                    aria-label={`Rated ${trainer.rating} out of 5`}
+                    aria-label={`Rated ${trainer?.rating} out of 5`}
                   >
-                    {trainer.rating >= 10 ? "★" : trainer.rating}
+                    {trainer?.rating >= 10 ? "★" : trainer?.rating}
                   </div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-(--color-secondary) text-lg truncate">{trainer.name}</h3>
-                {trainer.experience_years != null && (
+                <h3 className="font-bold text-(--color-secondary) text-lg truncate">{trainer?.name}</h3>
+                {trainer?.experience_years != null && (
                   <p className="text-sm text-(--color-contrast)">
-                    {trainer.experience_years}+ years
+                    {trainer?.experience_years}+ years
                   </p>
                 )}
               </div>
@@ -92,17 +98,17 @@ export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
           </div>
 
           <div className="p-5 flex-1 flex flex-col">
-            {trainer.bio && (
+            {trainer?.bio && (
               <p className="text-(--color-contrast) text-sm mb-4 line-clamp-3 flex-1">
-                {trainer.bio}
+                {trainer?.bio}
               </p>
             )}
 
-            {(trainer.specialties?.length || 0) > 0 && (
+            {(trainer?.specialties?.length || 0) > 0 && (
               <div className="mb-3">
                 <p className="text-xs text-(--color-contrast) font-medium mb-1.5">Specialties</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {trainer.specialties?.slice(0, 3).map((spec, idx) => (
+                  {trainer?.specialties?.slice(0, 3).map((spec, idx) => (
                     <span
                       key={idx}
                       className="px-2 py-1 bg-[#252525] text-(--color-contrast) text-xs rounded-md"
@@ -110,18 +116,18 @@ export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
                       {spec}
                     </span>
                   ))}
-                  {trainer.specialties && trainer.specialties.length > 3 && (
-                    <span className="px-2 py-1 text-xs text-(--color-contrast)">+{trainer.specialties.length - 3}</span>
+                  {trainer?.specialties && trainer?.specialties.length > 3 && (
+                    <span className="px-2 py-1 text-xs text-(--color-contrast)">+{trainer?.specialties.length - 3}</span>
                   )}
                 </div>
               </div>
             )}
 
-            {(trainer.certifications?.length || 0) > 0 && (
+            {(trainer?.certifications?.length || 0) > 0 && (
               <div>
                 <p className="text-xs text-(--color-contrast) font-medium mb-1.5">Certifications</p>
                 <p className="text-xs text-(--color-contrast) line-clamp-1">
-                  {trainer.certifications?.join(", ")}
+                  {trainer?.certifications?.join(", ")}
                 </p>
               </div>
             )}
@@ -129,9 +135,9 @@ export const MatchGrid = ({ matches, isLoading = false }: MatchGridProps) => {
 
           <div className="p-5 pt-2">
             <Link
-              href={`/get_matched/${trainer.id}`}
+              href={`/get_matched/${trainer?.id}`}
               className="w-full block py-2.5 text-center bg-(--color-primary) text-(--color-secondary) font-semibold rounded-lg hover:bg-[#e6c200] active:bg-[#ccac00] transition duration-200 focus:ring-2 focus:ring-[#e6c200] focus:outline-none"
-              aria-label={`View profile of ${trainer.name}`}
+              aria-label={`View profile of ${trainer?.name}`}
             >
               View Profile
             </Link>

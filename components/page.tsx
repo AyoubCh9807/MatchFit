@@ -121,7 +121,6 @@ export default function ExpertDashboard() {
   if (isLoading) {
     return (
       <div className="p-6 max-w-6xl mx-auto space-y-6">
-        {/* Header Skeleton */}
         <div className="flex items-center gap-4 mb-6">
           <div className="w-16 h-16 rounded-full bg-[#252525] animate-pulse"></div>
           <div>
@@ -130,7 +129,6 @@ export default function ExpertDashboard() {
           </div>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[...Array(3)].map((_, i) => (
             <div
@@ -143,7 +141,6 @@ export default function ExpertDashboard() {
           ))}
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-(--color-accent) border border-[#333333] rounded-xl p-6 animate-pulse">
             <div className="h-6 bg-[#252525] rounded w-1/3 mb-4"></div>
@@ -188,7 +185,6 @@ export default function ExpertDashboard() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-[#252525] shrink-0 overflow-hidden">
           {trainer.avatar_url ? (
@@ -228,7 +224,6 @@ export default function ExpertDashboard() {
         </div>
       </div>
 
-      {/* Today */}
       <div>
         <h2 className="text-lg font-semibold text-(--color-secondary) mb-3">
           Today • {today}
@@ -279,7 +274,6 @@ export default function ExpertDashboard() {
         )}
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { title: "Total Clients", value: stats.totalClients, icon: "👥" },
@@ -311,7 +305,6 @@ export default function ExpertDashboard() {
         ))}
       </div>
 
-      {/* Recent Clients */}
       {recentClients.length > 0 && (
         <div className="bg-(--color-accent) border border-[#333333] rounded-xl overflow-hidden">
           <div className="p-5 border-b border-[#333333]">

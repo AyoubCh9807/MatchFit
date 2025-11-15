@@ -9,5 +9,5 @@ export type Trainer = {
   specialties?: string[] | null;
   certifications?: string[] | null;
   available_hours?: string[] | null;
-  clients: number[];
+  clients: string[];
 };
