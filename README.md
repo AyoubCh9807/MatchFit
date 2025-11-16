@@ -66,15 +66,6 @@ zustand
 # Error Tracking
 @sentry/react @sentry/tracing
 
-# Animations
-framer-motion
-
-# Testing
-@playwright/test
-
-# UI / Component Docs
-@storybook/react @storybook/addon-essentials
-
 ##Getting Started
 
 Clone the repo
