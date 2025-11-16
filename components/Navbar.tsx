@@ -38,7 +38,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("role", role ?? "client");
   }, [role]);
 
-  if (pathname === "/") return <>{children}</>;
+  if (pathname === "/" || pathname === "/auth") return <>{children}</>;
 
   const userItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
