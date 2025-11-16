@@ -157,7 +157,6 @@ export default function ClientSessionsPage() {
         <div className="space-y-4">
           {sessions.map((session) => (
             <div
-              onClick={() => router.push("/get_matched/" + session.id)}
               key={session.id}
               className="bg-(--color-accent) border border-[#333333] rounded-xl p-5 hover:border-(--color-primary) transition cursor-pointer"
             >
