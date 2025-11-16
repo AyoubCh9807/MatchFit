@@ -51,7 +51,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
   const trainerItems = [
     { name: "Dashboard", icon: "🏠", path: "/dashboard" },
     { name: "Schedule", icon: "🏠", path: "/schedule" },
-    { name: "My Sessions", icon: "👤", path: "/clients" },
+    { name: "My Sessions", icon: "👤", path: "/sessions" },
     { name: "My Certifications", icon: "📈", path: "/certifications" },
     { name: "Settings", icon: "⚙️", path: "/settings" },
   ];
